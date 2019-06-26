@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>To Do List</title>
+
+	<style>
+		*{
+			margin: 0px;
+			padding: 0px;
+		}
+		body{
+			background: black;
+			margin: 0px;
+		}
+
+		.container {
+			margin: 20px auto;
+			width: 50%;
+			height: 600px;
+			background-color: #f1f1f1;
+			width: 350px;
+			border-radius: 5px;
+			box-shadow: 3px 3px 3px silver;
+			position: relative;
+
+		}
+		.head {
+			text-align: center;
+			color: brown;
+		}
+		.header {
+			text-align: center;
+			display: block;
+			margin: 20px auto;	
+			padding-top: 20px;	
+		}
+		.input{
+			padding: 3px;
+			border-color: brown;
+		}
+		.check{
+			padding: 3px;
+		}
+		.lists{
+			width: 350px;
+		}
+		.item {
+			display: flex;
+			justify-content: space-between;
+			list-style: none;
+			border: 1px solid none;
+			box-shadow: 2px 2px silver;
+			margin-left: 0px;
+			margin-bottom: 5px;
+			padding: 5px;
+
+		}
+		.span{
+			margin-right: 10px;
+		}
+		.remove {
+			margin-right: 2px;
+			padding: 1.5px;
+		}
+		.remove:hover {
+			color:  red;
+		}
+		.add{
+			padding: 1.5px;
+		}
+		#list:empty:after{
+			content: 'you are yet to add an item';
+			width: 100%;
+			text-align: center;
+			display: block;
+			color: silver;
+			margin: 20px 0px;
+		}
+		#complist:empty:after{
+			content: 'you are yet to complete the item(s) added';
+			width: 100%;
+			text-align: center;
+			display: block;
+			color: silver;
+			margin-top: 30px;
+		}
+		
+		#complist:not(:empty) {
+			position: relative;
+			padding: 60px 0 0 0;
+		}
+		#complist:not(:empty):before {
+			content: '';
+			width: 150px;
+			height: 1px;
+			background: grey;
+			position: absolute;
+			top: 30px;
+			left: 50%;
+			margin: 0 0 0 -75px;
+		}
+		.last_foot{
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			display: flex;
+			background: silver;
+		}
+
+
+	</style>
+</head>
+
+
+<body>
+	<div id="container" class="container">
+		<div class="head">
+			<h1>MY TODOLIST</h1>
+		</div>
+		<div id="header" class="header">
+			<input type="text" name="input" id="input" class="input" placeholder="type in your order">
+			<button><i class="fal fa-folder-plus" id="check" class="check">check</i></button>
+		</div>
+		<div id="lists" class="lists">
+			<!-- uncompleted task -->
+			<ul id="list" class="list"></ul>
+			<!-- completed task -->
+			<ul id="complist" class="list"></ul>
+		</div>
+	<nav class="last_foot">
+	<div class="last_foot-left">
+		<div class="left_title">
+			<h3 class="left_title-note">My Todolist</h3>
+		</div>
+		<div class="left_title-icon">
+			<p class="left_title-icon-note">Copyright &copy; 2019 MyTodolist. Inc.</p>
+		</div>
+	</div>
+	<div class="last_foot-right">
+		<p class="right_note">Terms</p>
+		<p class="right_note">Privacy Policy and Cookie Policy</p>
+		<p class="right_note">Intellectual Property</p>
+	</div>
+</nav>
+	</div>
+
+
+
+<script>
+	let enterPress = document.getElementById("input");
+	let check = document.getElementById("check");
+	function remove(){
+		// console.log(this.parentNode.parentNode);
+		let list = this.parentNode.parentNode;
+		let parent = list.parentNode;
+		parent.removeChild(list);
+	}
+	function complete(){
+		let list = this.parentNode.parentNode;
+		let parent = list.parentNode;
+		let id = parent.id;
+		let target = (id === 'list') ? document.getElementById('complist'):document.getElementById('list');	
+		parent.removeChild(list);
+		target.insertBefore(list, target.childNodes[0]);
+	}
+
+	function checkInput(e){
+		let input = document.getElementById("input").value;
+		if(e.keyCode == '13' && input){
+
+		let ul = document.getElementById('list');
+
+		let p = document.createElement('p');
+		p.innerText = input;
+		p.classList.add('par');
+
+		let span = document.createElement('span');
+		span.classList.add('span');
+
+		let li = document.createElement('li');
+
+		li.classList.add('item');
+
+		let removeBtn = document.createElement('button');
+		removeBtn.innerText = "remove";
+		removeBtn.classList.add('remove');
+		removeBtn.addEventListener("click", remove);
+
+
+		let addBtn = document.createElement('button');
+		addBtn.innerText = "add";
+		addBtn.classList.add('add');
+		addBtn.addEventListener("click", complete);
+
+		span.appendChild(removeBtn);
+		span.appendChild(addBtn);
+
+		li.appendChild(p);
+		li.appendChild(span);
+		ul.insertBefore(li, ul.childNodes[0]);
+		 document.getElementById("input").value = '';
+
+		}
+}
+check.addEventListener("click", checkInput);
+enterPress.addEventListener("keydown", checkInput);
+
+</script>
+
+</body>
+
+
+</html>
